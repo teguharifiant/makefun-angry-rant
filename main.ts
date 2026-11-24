@@ -15,6 +15,8 @@ const ENTRY =
  * - a single line (no \n or \r)
  * - not only whitespace
  * - no leading or trailing whitespace
+ * - a few sentences at most: at least 2 and at most 5 sentences,
+ *   counted by sentence-ending periods
  * Throws an Error naming the first violated gate.
  */
 export function validateEntry(text: string): void {
@@ -32,6 +34,12 @@ export function validateEntry(text: string): void {
   }
   if (text !== text.trim()) {
     throw new Error("entry must not have leading or trailing whitespace");
+  }
+  const sentences = [...text].filter((ch) => ch === ".").length;
+  if (sentences < 2 || sentences > 5) {
+    throw new Error(
+      `entry must be a few sentences at most (2-5), got ${sentences}`,
+    );
   }
 }
 
